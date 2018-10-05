@@ -78,7 +78,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GeofenceBootReceiver.cs" />
     <Compile Include="GeofenceImplementation.cs" />
     <Compile Include="GeofenceLocationListener.cs" />
     <Compile Include="GeofenceLocationService.cs" />

@@ -5,12 +5,12 @@ using System.Diagnostics;
 
 namespace Plugin.Geofence
 {
-  /// <summary>
-  /// Cross platform Geofence implemenations
-  /// </summary>
-  public class CrossGeofence
-  {
-    static Lazy<IGeofence> Implementation = new Lazy<IGeofence>(() => CreateGeofence(), System.Threading.LazyThreadSafetyMode.PublicationOnly);
+    /// <summary>
+    /// Cross platform Geofence implemenations
+    /// </summary>
+    public class CrossGeofence
+    {
+        static Lazy<IGeofence> Implementation = new Lazy<IGeofence>(() => CreateGeofence(), System.Threading.LazyThreadSafetyMode.PublicationOnly);
 
         /// <summary>
         /// Checks if plugin is initialized
@@ -63,15 +63,16 @@ namespace Plugin.Geofence
       /// Sound for notification
       /// </summary>
       public static Android.Net.Uri SoundUri { get; set; }
-      /// <summary>
-      /// Location updates internal
-      /// </summary>
-      public static int LocationUpdatesInterval { get; set; }
-      /// <summary>
-      /// Fastest location updates interval
-      /// </summary>
-      public static int FastestLocationUpdatesInterval { get; set; }
 #endif
+        /// <summary>
+        /// Location updates internal
+        /// </summary>
+        public static int LocationUpdatesInterval { get; set; }
+        /// <summary>
+        /// Fastest location updates interval
+        /// </summary>
+        public static int FastestLocationUpdatesInterval { get; set; }
+
 
         /// <summary>
         /// Initializes geofence plugin
@@ -108,24 +109,19 @@ namespace Plugin.Geofence
             get
             {
                 //Should always initialize plugin before use
-                if (!CrossGeofence.IsInitialized)
+                if (CrossGeofence.IsInitialized && Implementation != null)
                 {
-                    throw GeofenceNotInitializedException();
+                    return Implementation.Value;
                 }
-                var ret = Implementation.Value;
-                if (ret == null)
-                {
-                    throw NotImplementedInReferenceAssembly();
-                }
-                return ret;
-
+                else
+                    return null;
             }
         }
 
-    static IGeofence CreateGeofence()
-    {
+        static IGeofence CreateGeofence()
+        {
 #if NETSTANDARD1_0
-        return null;
+            return null;
 #else
             System.Diagnostics.Debug.WriteLine("Creating GeofenceImplementation");
             var geofenceImplementation = new GeofenceImplementation();

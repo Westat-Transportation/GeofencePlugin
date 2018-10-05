@@ -167,6 +167,16 @@
             </summary>
             <value><c>true</c> if request location permission; otherwise, <c>false</c>.</value>
         </member>
+        <member name="P:Plugin.Geofence.CrossGeofence.LocationUpdatesInterval">
+            <summary>
+            Location updates internal
+            </summary>
+        </member>
+        <member name="P:Plugin.Geofence.CrossGeofence.FastestLocationUpdatesInterval">
+            <summary>
+            Fastest location updates interval
+            </summary>
+        </member>
         <member name="M:Plugin.Geofence.CrossGeofence.Initialize``1(Plugin.Geofence.Abstractions.GeofencePriority,System.Single,System.Boolean,System.Boolean)">
             <summary>
             Initializes geofence plugin

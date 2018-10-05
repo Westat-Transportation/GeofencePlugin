@@ -126,12 +126,17 @@ namespace Plugin.Geofence
                 System.Diagnostics.Debug.WriteLine("Permission was not granted, no-oping.");
                 return;
             }
+            Initialize();
+        }
+
+        void Initialize()
+        {
             //Check if location services are enabled
             IsLocationEnabled((bool locationIsEnabled) => {
-                if(locationIsEnabled)
+                if (locationIsEnabled)
                 {
                     CurrentRequestType = RequestType.Default;
-                    if(IsMonitoring)
+                    if (IsMonitoring)
                     {
                         StartMonitoring(Regions.Values.ToList());
                         System.Diagnostics.Debug.WriteLine(string.Format("{0} - {1}", CrossGeofence.Id, "Monitoring was restored"));
@@ -194,6 +199,8 @@ namespace Plugin.Geofence
         /// <param name="region"></param>
         public void StartMonitoring(GeofenceCircularRegion region)
         {
+            if (mGeofencingClient is null)
+                Initialize();
             lock (Lock)
             {
                 if (IsMonitoring)
@@ -234,6 +241,8 @@ namespace Plugin.Geofence
         /// <param name="regions"></param>
         public void StartMonitoring(IList<GeofenceCircularRegion> regions)
         {
+            if (mGeofencingClient is null)
+                Initialize();
             lock (Lock)
             {
               if (IsMonitoring)
@@ -352,7 +361,6 @@ namespace Plugin.Geofence
         /// <param name="regionIdentifier"></param>
         public void StopMonitoring(string regionIdentifier)
         {
-
             StopMonitoring(new List<string>() { regionIdentifier });
         }
 
@@ -371,7 +379,9 @@ namespace Plugin.Geofence
         }
 
         private void RemoveGeofences(IList<string> regionIdentifiers)
-        {           
+        {
+            
+
             foreach (string identifier in regionIdentifiers)
             {
                 //Remove this region from regions dictionary and results
@@ -396,6 +406,9 @@ namespace Plugin.Geofence
         /// </summary>
         public void StopMonitoring(IList<string> regionIdentifiers)
         {
+            if (mGeofencingClient is null)
+                Initialize();
+
             mRequestedRegionIdentifiers = new List<string>();
             ((List<string>)mRequestedRegionIdentifiers).AddRange(regionIdentifiers);
 
@@ -421,6 +434,9 @@ namespace Plugin.Geofence
         /// </summary>
         public void StopMonitoringAllRegions()
         {
+            if (mGeofencingClient is null)
+                Initialize();
+
             if (IsMonitoring && mGoogleApiClient.IsConnected)
             {
                 RemoveGeofences();
