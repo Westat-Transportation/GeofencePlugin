@@ -201,6 +201,9 @@ namespace Plugin.Geofence
         {
             if (mGeofencingClient is null)
                 Initialize();
+            if (mGeofencingClient is null)
+                return;
+
             lock (Lock)
             {
                 if (IsMonitoring)
@@ -243,6 +246,9 @@ namespace Plugin.Geofence
         {
             if (mGeofencingClient is null)
                 Initialize();
+            if (mGeofencingClient is null)
+                return;
+
             lock (Lock)
             {
               if (IsMonitoring)
@@ -272,6 +278,15 @@ namespace Plugin.Geofence
                     Transition = GeofenceTransition.Unknown
                 });
         }
+
+        internal GeofenceResult GetGeofenceResult(string identifier)
+        {
+            lock (Lock) 
+                if (!mGeofenceResults.ContainsKey(identifier))
+                    AddGeofenceResult(identifier);
+            return mGeofenceResults[identifier];
+        }
+
 
         /// <summary>
         /// Adds geofences using Android's geofence client.
@@ -408,6 +423,8 @@ namespace Plugin.Geofence
         {
             if (mGeofencingClient is null)
                 Initialize();
+            if (mGeofencingClient is null)
+                return;
 
             mRequestedRegionIdentifiers = new List<string>();
             ((List<string>)mRequestedRegionIdentifiers).AddRange(regionIdentifiers);
@@ -436,6 +453,8 @@ namespace Plugin.Geofence
         {
             if (mGeofencingClient is null)
                 Initialize();
+            if (mGeofencingClient is null)
+                return;
 
             if (IsMonitoring && mGoogleApiClient.IsConnected)
             {
@@ -545,6 +564,11 @@ namespace Plugin.Geofence
  
         async public void OnConnected(Bundle connectionHint)
         {
+            if (mFusedLocationProviderClient is null)
+                Initialize();
+            if (mFusedLocationProviderClient is null)
+                return;
+
             var location = await mFusedLocationProviderClient.GetLastLocationAsync();
             SetLastKnownLocation(location);
             if (CurrentRequestType == RequestType.Add)
