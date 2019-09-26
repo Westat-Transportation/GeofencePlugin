@@ -161,15 +161,11 @@ namespace Plugin.Geofence
             {
                 var message = string.Format("{0} - {1}", CrossGeofence.Id, ex.ToString());
                 System.Diagnostics.Debug.WriteLine(message);
-                ((GeofenceImplementation)CrossGeofence.Current).LocationHasError = true;
-                CrossGeofence.GeofenceListener.OnError(message);
             }
             catch (System.Exception ex)
             {
                 var message = string.Format("{0} - {1}", CrossGeofence.Id, ex.ToString());
                 System.Diagnostics.Debug.WriteLine(message);
-                ((GeofenceImplementation)CrossGeofence.Current).LocationHasError = true;
-                CrossGeofence.GeofenceListener.OnError(message);
             }
         }
 
